@@ -1,2 +1,6 @@
 # lucho-luchez.github.io
-Novedades del Videoclub
+Videoclub
+
+Esta página es un resumen de las películas subidas en el Drive, pero puestas de tal forma que sea más fácil buscar películas concretas.
+
+Aparte, menusalmente intentaré subir una pestaña con las nuevas películas metidas ese mes.
