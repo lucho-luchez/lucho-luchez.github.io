@@ -47,7 +47,6 @@
       padding:12px 14px; border-radius:12px; outline:none; font-size:14px;
     }
     .tools input:focus,.tools select:focus{border-color:var(--ring); box-shadow:0 0 0 3px rgba(59,130,246,.25)}
-
     .grid{display:grid; grid-template-columns: repeat( auto-fill, minmax(320px,1fr) ); gap:20px; padding:24px 20px 60px}
     .card{
       background: radial-gradient(300px 160px at 120% -20%, rgba(124,58,237,.12), transparent 50%), var(--card);
@@ -55,7 +54,6 @@
       transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
     }
     .card:hover{ transform: translateY(-4px); box-shadow: 0 14px 40px rgba(2,8,23,.35); border-color: rgba(99,102,241,.45) }
-    
     .poster-container{
       position: relative; height: 180px; background: linear-gradient(135deg, #1e293b, #0f172a);
       overflow: hidden;
@@ -72,7 +70,6 @@
       height: 100%; background: linear-gradient(135deg, #374151, #1f2937);
       color: #9ca3af; font-size: 14px; font-weight: 500;
     }
-    
     .content{
       padding: 18px;
     }
@@ -83,7 +80,6 @@
     .rating{margin-left:auto; background:linear-gradient(90deg, var(--accent), var(--accent-2)); color:#0b1022; font-weight:800}
     .director{font-weight:600; color:#cbd5ff; margin:8px 0 6px; font-size:13px}
     .sinopsis{color:#e5e7eb; font-size:13px; line-height:1.5; margin-bottom: 12px}
-    
     .actions{
       display: flex; gap: 8px; margin-top: 12px;
     }
@@ -110,17 +106,50 @@
     .btn-trailer:hover{
       background: #d97706; transform: translateY(-1px);
     }
-    
     .quality-badge{
       position: absolute; top: 8px; right: 8px;
       background: rgba(0,0,0,.7); color: white; padding: 4px 8px;
       border-radius: 4px; font-size: 10px; font-weight: 600;
     }
-    
     .footer-note{color:#9aa5ff; font-size:12px; margin:10px 2px 0}
     .no-results{display:none; text-align:center; color:#cbd5ff; opacity:.8; padding:26px 8px}
     .count{font-weight:700}
-
+    /* Estilos del modal */
+    .modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.9);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      padding: 20px;
+    }
+    .modal-content {
+      position: relative;
+      width: 90%;
+      max-width: 960px;
+      height: auto;
+      aspect-ratio: 16 / 9; /* Mantener relación de aspecto 16:9 */
+    }
+    .modal iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+    .close-btn {
+      position: absolute;
+      top: 10px;
+      right: 20px;
+      color: #fff;
+      font-size: 30px;
+      font-weight: bold;
+      cursor: pointer;
+      z-index: 1001;
+    }
     @media (max-width:720px){
       .title h1{font-size:42px}
       .tools{grid-template-columns:1fr 1fr;}
@@ -140,7 +169,6 @@
        <nav>
       <a href="../index.html">Volver al Catálogo</a>
     </nav>
-       
       </div>
       <div class="tools" aria-label="Herramientas de filtrado y búsqueda">
         <input id="q" type="search" placeholder="Buscar por título, director o palabra clave…" />
@@ -181,20 +209,17 @@
       <p class="footer-note">Todos los subtítulos son en inglés. Las notas provienen de Letterboxd (cuando aplica).</p>
     </div>
   </header>
-
   <main class="wrap">
     <section class="grid" id="grid">
-
-      <!-- TEMPLATE DE TARJETA: duplicado para cada película con data-* para filtros y orden -->
-
-      
-
-    </section>
-
     </section>
     <div class="no-results" id="noResults">No hay resultados con los filtros actuales.</div>
   </main>
-
+  <div id="trailerModal" class="modal">
+    <span class="close-btn">×</span>
+    <div class="modal-content">
+      <iframe id="trailerPlayer" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    </div>
+  </div>
 <script>
   // === Script original de filtros y ordenar ===
   const q = document.getElementById('q');
@@ -204,12 +229,10 @@
   const grid = document.getElementById('grid');
   const count = document.querySelector('.count');
   const noResults = document.getElementById('noResults');
-
   function applyFilters(){
     const term = q.value.trim().toLowerCase();
     const g = (genre.value || '').toLowerCase();
     const l = (lang.value || '').toLowerCase();
-
     let visible = 0;
     const cards = Array.from(grid.querySelectorAll('.card'));
     cards.forEach(card=>{
@@ -218,20 +241,16 @@
       const sinopsis = (card.querySelector('.sinopsis')?.textContent || '').toLowerCase();
       const genres = (card.dataset.genres || '').toLowerCase();
       const language = (card.dataset.language || '').toLowerCase();
-
       const matchesTerm = !term || title.includes(term) || director.includes(term) || sinopsis.includes(term);
       const matchesGenre = !g || genres.split(',').some(x=>x.trim()===g);
       const matchesLang = !l || language===l;
-
       const show = matchesTerm && matchesGenre && matchesLang;
       card.style.display = show ? '' : 'none';
       if(show) visible++;
     });
-
     count.textContent = visible;
     noResults.style.display = visible ? 'none' : 'block';
   }
-
   function applySort(){
     const val = sortSel.value;
     const items = Array.from(grid.children).filter(el=>el.classList.contains('card') && el.style.display!== 'none');
@@ -245,21 +264,17 @@
     if(!cmp) return;
     items.sort(cmp).forEach(el=>grid.appendChild(el));
   }
-
   function initFilters(){
     q.addEventListener('input', ()=>{applyFilters(); applySort();});
     genre.addEventListener('change', ()=>{applyFilters(); applySort();});
     lang.addEventListener('change', ()=>{applyFilters(); applySort();});
     sortSel.addEventListener('change', ()=>{applySort();});
   }
-
   initFilters();
 </script>
-
 <script>
   // === Nuevo script para cargar películas desde TMDB ===
   const API_KEY = "ce0aa6e8cc13719a406cbd638a573359"; // ⬅️ pon aquí tu API de TMDB
-
   // Mapa oficial de géneros TMDB (id → nombre)
   const GENRES = {
     28: "Acción",
@@ -282,30 +297,30 @@
     10752: "Drama bélico",
     37: "Western"
   };
-
   const movies = [
-    "Some Like It Hot",
-    "tmdb_id:1184918", //the wild robot
-    "Nueve Reinas",
-    "Paris, Texas",
-    "Mystic River",
-    "Magazine Dreams",
-    "Materialists",
-    "tmdb_id:1244244",  //Cloud
-    "tmdb_id:104548", // Demons>
-    "La Haine",
-    "Lawrence of Arabia",
-    "tmdb_id:615453", //Ne Zha I
-    "tmdb_id:980477", //Ne Zha II
-    "Superman",
-    "Sinners",
-    "Superbad",
-    "Moonlight",
-    "Everything Everywhere All at Once",
-    "Hoodwinked!",
+    { id: "Some Like It Hot", downloadUrl: "https://univmurcia-my.sharepoint.com/my?id=%2Fpersonal%2Fl%5Fruizllamas%5Fum%5Fes%2FDocuments%2FVideoclub%2FPel%C3%ADculas%2FSome%20Like%20It%20Hot%20%281959%29&sortField=Modified&isAscending=false" },
+    { id: "tmdb_id:1184918", downloadUrl: "https://univmurcia-my.sharepoint.com/my?id=%2Fpersonal%2Fl%5Fruizllamas%5Fum%5Fes%2FDocuments%2FVideoclub%2FPel%C3%ADculas%2FThe%20Wild%20Robot%20%282024%29&sortField=Modified&isAscending=false" },
+    { id: "Nueve Reinas", downloadUrl: "https://univmurcia-my.sharepoint.com/my?id=%2Fpersonal%2Fl%5Fruizllamas%5Fum%5Fes%2FDocuments%2FVideoclub%2FPel%C3%ADculas%2FNueve%20Reinas%20%282000%29&sortField=Modified&isAscending=false" },
+    { id: "Paris, Texas" },
+    { id: "Mystic River" },
+    { id: "Magazine Dreams" },
+    { id: "Materialists" },
+    { id: "tmdb_id:1244244" },
+    { id: "tmdb_id:104548" },
+    { id: "La Haine", downloadUrl: "https://onedrive.live.com/ruta-a-la-pelicula-2" },
+    { id: "Lawrence of Arabia" },
+    { id: "tmdb_id:615453" },
+    { id: "tmdb_id:980477" },
+    { id: "Superman" },
+    { id: "Sinners" },
+    { id: "Superbad" },
+    { id: "Moonlight" },
+    { id: "Everything Everywhere All at Once" },
+    { id: "Hoodwinked!" },
   ];
-
-async function fetchMovie(identifier) {
+async function fetchMovie(movieObject) {
+    const identifier = movieObject.id;
+    const downloadUrl = movieObject.downloadUrl;
     let url;
     if (identifier.startsWith("tmdb_id:")) {
         const movieId = identifier.split(":")[1];
@@ -313,12 +328,10 @@ async function fetchMovie(identifier) {
     } else {
         url = `https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&language=es-ES&query=${encodeURIComponent(identifier)}`;
     }
-
     try {
         const res = await fetch(url);
         const data = await res.json();
         let movieData;
-
         if (identifier.startsWith("tmdb_id:")) {
             movieData = data;
         } else {
@@ -329,21 +342,32 @@ async function fetchMovie(identifier) {
                 return;
             }
         }
-        
         if (movieData) {
-            // convertir los géneros
+            let director = '';
+            try {
+              const creditsRes = await fetch(`https://api.themoviedb.org/3/movie/${movieData.id}/credits?api_key=${API_KEY}`);
+              const creditsData = await creditsRes.json();
+              const directorObj = creditsData.crew.find(person => person.job === "Director");
+              if (directorObj) {
+                director = directorObj.name;
+              }
+            } catch (error) {
+              console.warn(`No se pudieron obtener los créditos del director para ${movieData.title}`);
+            }
+            const videosRes = await fetch(`https://api.themoviedb.org/3/movie/${movieData.id}/videos?api_key=${API_KEY}`);
+            const videosData = await videosRes.json();
+            const trailer = videosData.results.find(video => video.site === "YouTube" && video.type === "Trailer");
+            const trailerId = trailer ? trailer.key : null;
             const genreNames = (movieData.genre_ids || [])
                 .map(id => GENRES[id] || "")
                 .filter(Boolean);
-
             const card = document.createElement('article');
             card.className = 'card';
             card.dataset.title = movieData.title;
             card.dataset.year = (movieData.release_date || "").split("-")[0] || "";
-            card.dataset.rating = movieData.vote_average;
+            card.dataset.rating = movieData.vote_average.toFixed(1);
             card.dataset.language = movieData.original_language;
             card.dataset.genres = genreNames.join(",");
-
             card.innerHTML = `
                 <div class="poster-container">
                 ${movieData.poster_path 
@@ -352,38 +376,57 @@ async function fetchMovie(identifier) {
                 </div>
                 <div class="content">
                 <h3>${movieData.title} <span class="meta">(${(movieData.release_date || "").split("-")[0]})</span></h3>
-                <div class="meta">
-                    <span>${movieData.original_language.toUpperCase()}</span>
-                    <div class="chips">
+                ${director ? `<p class="director">Director: ${director}</p>` : ''}
+                <div class="chips">
                     ${genreNames.map(g=>`<span class="chip">${g}</span>`).join("")}
-                    <span class="chip rating">${movieData.vote_average.toFixed(1)}/10</span>
-                    </div>
                 </div>
                 <p class="sinopsis">${movieData.overview || "Sinopsis no disponible."}</p>
                 <div class="actions">
+                    ${trailerId ? `<button class="btn btn-trailer" data-trailer-id="${trailerId}">Ver Tráiler</button>` : ''}
+                    ${downloadUrl ? `<a href="${downloadUrl}" class="btn btn-download" target="_blank">Descargar</a>` : ''}
                     <a href="https://www.themoviedb.org/movie/${movieData.id}" class="btn btn-info" target="_blank">TMDB</a>
                 </div>
                 </div>
             `;
-
             grid.appendChild(card);
         }
     } catch (error) {
         console.error(`❌ Error al cargar la película "${identifier}":`, error);
     }
   }
-
   async function loadMovies() {
-    for (const identifier of movies) {
-      await fetchMovie(identifier);
+    for (const movieObject of movies) {
+      await fetchMovie(movieObject);
     }
-    // actualizar contador inicial
     document.querySelector('.count').textContent = grid.querySelectorAll('.card').length;
     applyFilters();
     applySort();
   }
-
   loadMovies();
+</script>
+<script>
+  const modal = document.getElementById('trailerModal');
+  const closeBtn = document.querySelector('.close-btn');
+  const player = document.getElementById('trailerPlayer');
+  document.addEventListener('click', (e) => {
+    if (e.target.matches('.btn-trailer')) {
+      const trailerId = e.target.dataset.trailerId;
+      if (trailerId) {
+        player.src = `https://www.youtube.com/embed/${trailerId}?autoplay=1`;
+        modal.style.display = 'flex';
+      }
+    }
+  });
+  closeBtn.addEventListener('click', () => {
+    player.src = '';
+    modal.style.display = 'none';
+  });
+  window.addEventListener('click', (e) => {
+    if (e.target === modal) {
+      player.src = '';
+      modal.style.display = 'none';
+    }
+  });
 </script>
 </body>
 </html>
