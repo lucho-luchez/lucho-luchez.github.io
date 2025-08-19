@@ -55,7 +55,7 @@
       transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
     }
     .card:hover{ transform: translateY(-4px); box-shadow: 0 14px 40px rgba(2,8,23,.35); border-color: rgba(99,102,241,.45) }
-    
+
     .poster-container{
       position: relative; height: 180px; background: linear-gradient(135deg, #1e293b, #0f172a);
       overflow: hidden;
@@ -72,7 +72,7 @@
       height: 100%; background: linear-gradient(135deg, #374151, #1f2937);
       color: #9ca3af; font-size: 14px; font-weight: 500;
     }
-    
+
     .content{
       padding: 18px;
     }
@@ -83,7 +83,7 @@
     .rating{margin-left:auto; background:linear-gradient(90deg, var(--accent), var(--accent-2)); color:#0b1022; font-weight:800}
     .director{font-weight:600; color:#cbd5ff; margin:8px 0 6px; font-size:13px}
     .sinopsis{color:#e5e7eb; font-size:13px; line-height:1.5; margin-bottom: 12px}
-    
+
     .actions{
       display: flex; gap: 8px; margin-top: 12px;
     }
@@ -110,16 +110,57 @@
     .btn-trailer:hover{
       background: #d97706; transform: translateY(-1px);
     }
-    
+
     .quality-badge{
       position: absolute; top: 8px; right: 8px;
       background: rgba(0,0,0,.7); color: white; padding: 4px 8px;
       border-radius: 4px; font-size: 10px; font-weight: 600;
     }
-    
+
     .footer-note{color:#9aa5ff; font-size:12px; margin:10px 2px 0}
     .no-results{display:none; text-align:center; color:#cbd5ff; opacity:.8; padding:26px 8px}
     .count{font-weight:700}
+
+    /* Estilos del modal */
+    .modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.9);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      padding: 20px;
+    }
+
+    .modal-content {
+      position: relative;
+      width: 90%;
+      max-width: 960px;
+      height: auto;
+      aspect-ratio: 16 / 9; /* Mantener relación de aspecto 16:9 */
+    }
+
+    .modal iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 10px;
+      right: 20px;
+      color: #fff;
+      font-size: 30px;
+      font-weight: bold;
+      cursor: pointer;
+      z-index: 1001;
+    }
+
 
     @media (max-width:720px){
       .title h1{font-size:42px}
@@ -182,16 +223,17 @@
 
   <main class="wrap">
     <section class="grid" id="grid">
-
-      <!-- TEMPLATE DE TARJETA: duplicado para cada película con data-* para filtros y orden -->
-
-      
-
-    </section>
-
     </section>
     <div class="no-results" id="noResults">No hay resultados con los filtros actuales.</div>
   </main>
+
+  <div id="trailerModal" class="modal">
+    <span class="close-btn">×</span>
+    <div class="modal-content">
+      <iframe id="trailerPlayer" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    </div>
+  </div>
+
 
 <script>
   // === Script original de filtros y ordenar ===
@@ -282,41 +324,43 @@
   };
 
   const movies = [
-    "tmdb_id:1244244",
-    "tmdb_id:104548",
-    "La Haine",
-    "Magazine Dreams",
-    "Materialists",
-    "Mystic River",
-    "Nueve Reinas",
-    "Paris, Texas",
-    "Some Like It Hot",
-    "tmdb_id:615453",
-    "tmdb_id:980477",
-    "Lawrence of Arabia",
-    "Superman",
-    "Sinners",
-    "Superbad",
-    "Moonlight",
-    "Everything Everywhere All at Once",
-    "Hoodwinked!",
-    "A Taxi Driver",
-    "Kill Bill: Vol. 1",
-    "Tropic Thunder",
-    "Fight Club",
-    "Dead Poets Society",
-    "tmdb_id:30018",
-    "Wolfs",
-    "tmdb_id:580175",
-    "Bronson",
-    "Kill Bill: Vol. 2",
-    "Nope",
-    "Arrival",
-    "tmdb_id:11645",
-    "tmdb_id:1184918", //the wild robot
+    { id: "tmdb_id:1244244", /*Cloud*/ },
+    { id: "tmdb_id:104548", /*Demons (Pandemonium)*/ },
+    { id: "La Haine", downloadUrl: "https://onedrive.live.com/ruta-a-la-pelicula-1" },
+    { id: "Magazine Dreams" },
+    { id: "Materialists" },
+    { id: "Mystic River" },
+    { id: "Nueve Reinas", downloadUrl: "https://univmurcia-my.sharepoint.com/:f:/g/personal/l_ruizllamas_um_es/EmBYqnhnGQxKg1qeP-R9B3MBCdhYFuI_5GzSovoYAgEH2A?e=IPl4aW" },
+    { id: "Paris, Texas", downloadUrl: "https://univmurcia-my.sharepoint.com/:f:/g/personal/l_ruizllamas_um_es/Ei9IozTlTfZInWY8yVxv8cABwofFc36t1MHh1NgiK6IInw?e=uMipfQ" },
+    { id: "Some Like It Hot", downloadUrl: "https://univmurcia-my.sharepoint.com/:f:/g/personal/l_ruizllamas_um_es/EnQRybWjD-RPl_NF2F3b84IBie2_xPRX7vi-NNCb5-rsJg?e=b8ddPG" },
+    { id: "tmdb_id:615453", /*Ne Zha I*/ },
+    { id: "tmdb_id:980477", /*Ne Zha II*/ },
+    { id: "Lawrence of Arabia" },
+    { id: "Superman" },
+    { id: "Sinners" },
+    { id: "Superbad" },
+    { id: "Moonlight" },
+    { id: "Everything Everywhere All at Once" },
+    { id: "Hoodwinked!" },
+    { id: "A Taxi Driver" },
+    { id: "Kill Bill: Vol. 1" },
+    { id: "Tropic Thunder" },
+    { id: "Fight Club" },
+    { id: "Dead Poets Society" },
+    { id: "tmdb_id:30018", /*Mother*/ },
+    { id: "Wolfs" },
+    { id: "tmdb_id:580175", /*Another Round*/ },
+    { id: "Bronson" },
+    { id: "Kill Bill: Vol. 2" },
+    { id: "Nope" },
+    { id: "Arrival" },
+    { id: "tmdb_id:11645", /*RAN*/ },
+    { id: "tmdb_id:1184918", /*The wild robot*/ downloadUrl: "https://univmurcia-my.sharepoint.com/:f:/g/personal/l_ruizllamas_um_es/Et3dbuQ5PH9Apcrcgaj3gawB4Tz5tyIKDVjbFJvC3CiunA?e=D8iJYr" },
   ];
 
-async function fetchMovie(identifier) {
+async function fetchMovie(movieObject) {
+    const identifier = movieObject.id;
+    const downloadUrl = movieObject.downloadUrl;
     let url;
     if (identifier.startsWith("tmdb_id:")) {
         const movieId = identifier.split(":")[1];
@@ -342,7 +386,26 @@ async function fetchMovie(identifier) {
         }
         
         if (movieData) {
-            // convertir los géneros
+            // Obtener el director (director de la primera crew)
+            let director = '';
+            try {
+              const creditsRes = await fetch(`https://api.themoviedb.org/3/movie/${movieData.id}/credits?api_key=${API_KEY}`);
+              const creditsData = await creditsRes.json();
+              const directorObj = creditsData.crew.find(person => person.job === "Director");
+              if (directorObj) {
+                director = directorObj.name;
+              }
+            } catch (error) {
+              console.warn(`No se pudieron obtener los créditos del director para ${movieData.title}`);
+            }
+
+            // Obtener el ID del tráiler
+            const videosRes = await fetch(`https://api.themoviedb.org/3/movie/${movieData.id}/videos?api_key=${API_KEY}`);
+            const videosData = await videosRes.json();
+            const trailer = videosData.results.find(video => video.site === "YouTube" && video.type === "Trailer");
+            const trailerId = trailer ? trailer.key : null;
+
+            // Convertir los géneros
             const genreNames = (movieData.genre_ids || [])
                 .map(id => GENRES[id] || "")
                 .filter(Boolean);
@@ -351,7 +414,7 @@ async function fetchMovie(identifier) {
             card.className = 'card';
             card.dataset.title = movieData.title;
             card.dataset.year = (movieData.release_date || "").split("-")[0] || "";
-            card.dataset.rating = movieData.vote_average;
+            card.dataset.rating = movieData.vote_average.toFixed(1);
             card.dataset.language = movieData.original_language;
             card.dataset.genres = genreNames.join(",");
 
@@ -360,18 +423,18 @@ async function fetchMovie(identifier) {
                 ${movieData.poster_path 
                     ? `<img src="https://image.tmdb.org/t/p/w500${movieData.poster_path}" alt="${movieData.title}" class="poster">` 
                     : `<div class="poster-placeholder">Sin póster</div>`}
+                ${movieData.vote_average ? `<span class="quality-badge">${movieData.vote_average.toFixed(1)}/10</span>` : ''}
                 </div>
                 <div class="content">
                 <h3>${movieData.title} <span class="meta">(${(movieData.release_date || "").split("-")[0]})</span></h3>
-                <div class="meta">
-                    <span>${movieData.original_language.toUpperCase()}</span>
-                    <div class="chips">
+                ${director ? `<p class="director">Director: ${director}</p>` : ''}
+                <div class="chips">
                     ${genreNames.map(g=>`<span class="chip">${g}</span>`).join("")}
-                    <span class="chip rating">${movieData.vote_average.toFixed(1)}/10</span>
-                    </div>
                 </div>
                 <p class="sinopsis">${movieData.overview || "Sinopsis no disponible."}</p>
                 <div class="actions">
+                    ${trailerId ? `<button class="btn btn-trailer" data-trailer-id="${trailerId}">Ver Tráiler</button>` : ''}
+                    ${downloadUrl ? `<a href="${downloadUrl}" class="btn btn-download" target="_blank">Descargar</a>` : ''}
                     <a href="https://www.themoviedb.org/movie/${movieData.id}" class="btn btn-info" target="_blank">TMDB</a>
                 </div>
                 </div>
@@ -385,8 +448,8 @@ async function fetchMovie(identifier) {
   }
 
   async function loadMovies() {
-    for (const identifier of movies) {
-      await fetchMovie(identifier);
+    for (const movieObject of movies) {
+      await fetchMovie(movieObject);
     }
     // actualizar contador inicial
     document.querySelector('.count').textContent = grid.querySelectorAll('.card').length;
@@ -396,9 +459,37 @@ async function fetchMovie(identifier) {
 
   loadMovies();
 </script>
+
+<script>
+  // Script para manejar la ventana modal
+  const modal = document.getElementById('trailerModal');
+  const closeBtn = document.querySelector('.close-btn');
+  const player = document.getElementById('trailerPlayer');
+
+  // Abre el modal al hacer clic en el botón
+  document.addEventListener('click', (e) => {
+    if (e.target.matches('.btn-trailer')) {
+      const trailerId = e.target.dataset.trailerId;
+      if (trailerId) {
+        player.src = `https://www.youtube.com/embed/${trailerId}?autoplay=1`;
+        modal.style.display = 'flex';
+      }
+    }
+  });
+
+  // Cierra el modal al hacer clic en el botón de cerrar
+  closeBtn.addEventListener('click', () => {
+    player.src = ''; // Detiene el video al cerrar
+    modal.style.display = 'none';
+  });
+
+  // Cierra el modal al hacer clic fuera del contenido
+  window.addEventListener('click', (e) => {
+    if (e.target === modal) {
+      player.src = '';
+      modal.style.display = 'none';
+    }
+  });
+</script>
 </body>
 </html>
-
-
-
-
