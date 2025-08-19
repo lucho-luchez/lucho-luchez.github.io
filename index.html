@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Videoclub</title>
+  <title>Videoclub - Agosto 2025</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Bebas+Neue&display=swap" rel="stylesheet">
@@ -17,6 +17,8 @@
       --accent: #7c3aed;
       --accent-2: #06b6d4;
       --ring: #3b82f6;
+      --success: #10b981;
+      --warning: #f59e0b;
     }
     *{box-sizing: border-box}
     html,body{height:100%}
@@ -33,7 +35,7 @@
       border-bottom: 1px solid rgba(148,163,184,.15);
       z-index: 50;
     }
-    .wrap{max-width:1050px; margin:0 auto; padding:18px 20px}
+    .wrap{max-width:1200px; margin:0 auto; padding:18px 20px}
     .title{
       display:flex;align-items:baseline;gap:14px; flex-wrap:wrap;
     }
@@ -46,20 +48,75 @@
     }
     .tools input:focus,.tools select:focus{border-color:var(--ring); box-shadow:0 0 0 3px rgba(59,130,246,.25)}
 
-    .grid{display:grid; grid-template-columns: repeat( auto-fill, minmax(260px,1fr) ); gap:16px; padding:24px 20px 60px}
+    .grid{display:grid; grid-template-columns: repeat( auto-fill, minmax(320px,1fr) ); gap:20px; padding:24px 20px 60px}
     .card{
       background: radial-gradient(300px 160px at 120% -20%, rgba(124,58,237,.12), transparent 50%), var(--card);
-      border:1px solid rgba(148,163,184,.18); border-radius:20px; padding:18px; position:relative; overflow:hidden;
+      border:1px solid rgba(148,163,184,.18); border-radius:20px; overflow:hidden; position:relative;
       transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
     }
     .card:hover{ transform: translateY(-4px); box-shadow: 0 14px 40px rgba(2,8,23,.35); border-color: rgba(99,102,241,.45) }
-    .card h3{margin:0 0 6px; font-size:18px}
-    .meta{display:flex; gap:10px; flex-wrap:wrap; align-items:center; color:var(--muted); font-size:12px}
+    
+    .poster-container{
+      position: relative; height: 180px; background: linear-gradient(135deg, #1e293b, #0f172a);
+      overflow: hidden;
+    }
+    .poster{
+      width: 100%; height: 100%; object-fit: cover;
+      transition: transform .3s ease;
+    }
+    .card:hover .poster{
+      transform: scale(1.05);
+    }
+    .poster-placeholder{
+      display: flex; align-items: center; justify-content: center;
+      height: 100%; background: linear-gradient(135deg, #374151, #1f2937);
+      color: #9ca3af; font-size: 14px; font-weight: 500;
+    }
+    
+    .content{
+      padding: 18px;
+    }
+    .card h3{margin:0 0 8px; font-size:18px; line-height: 1.2}
+    .meta{display:flex; gap:10px; flex-wrap:wrap; align-items:center; color:var(--muted); font-size:12px; margin-bottom: 8px}
     .chips{display:flex; gap:6px; flex-wrap:wrap; margin:10px 0 12px}
     .chip{background:var(--chip); color:#c7d2fe; border:1px solid rgba(148,163,184,.18); padding:6px 10px; border-radius:999px; font-size:11px; font-weight:600}
     .rating{margin-left:auto; background:linear-gradient(90deg, var(--accent), var(--accent-2)); color:#0b1022; font-weight:800}
     .director{font-weight:600; color:#cbd5ff; margin:8px 0 6px; font-size:13px}
-    .sinopsis{color:#e5e7eb; font-size:13px; line-height:1.5}
+    .sinopsis{color:#e5e7eb; font-size:13px; line-height:1.5; margin-bottom: 12px}
+    
+    .actions{
+      display: flex; gap: 8px; margin-top: 12px;
+    }
+    .btn{
+      flex: 1; padding: 8px 12px; border-radius: 8px; font-size: 12px; font-weight: 600;
+      text-decoration: none; text-align: center; border: none; cursor: pointer;
+      transition: all .2s ease; display: inline-block;
+    }
+    .btn-download{
+      background: var(--success); color: white;
+    }
+    .btn-download:hover{
+      background: #059669; transform: translateY(-1px);
+    }
+    .btn-info{
+      background: var(--accent); color: white;
+    }
+    .btn-info:hover{
+      background: #6d28d9; transform: translateY(-1px);
+    }
+    .btn-trailer{
+      background: var(--warning); color: white;
+    }
+    .btn-trailer:hover{
+      background: #d97706; transform: translateY(-1px);
+    }
+    
+    .quality-badge{
+      position: absolute; top: 8px; right: 8px;
+      background: rgba(0,0,0,.7); color: white; padding: 4px 8px;
+      border-radius: 4px; font-size: 10px; font-weight: 600;
+    }
+    
     .footer-note{color:#9aa5ff; font-size:12px; margin:10px 2px 0}
     .no-results{display:none; text-align:center; color:#cbd5ff; opacity:.8; padding:26px 8px}
     .count{font-weight:700}
@@ -67,11 +124,8 @@
     @media (max-width:720px){
       .title h1{font-size:42px}
       .tools{grid-template-columns:1fr 1fr;}
-    }
-    @media print{
-      header{position:static; backdrop-filter:none; background:white; color:black}
-      body{background:white; color:black}
-      .card{break-inside: avoid}
+      .grid{grid-template-columns: repeat( auto-fill, minmax(280px,1fr) ); gap:16px;}
+      .actions{flex-direction: column;}
     }
   </style>
 </head>
@@ -133,517 +187,214 @@
 
       
 
-      <article class="card" data-title="Cloud" data-year="2024" data-rating="3.5" data-language="Japonés" data-genres="Terror,Suspense">
-        <h3>Cloud <span class="meta">(2024)</span></h3>
-        <div class="meta">
-          <span>Japonés</span>
-          <div class="chips">
-            <span class="chip">Terror</span>
-            <span class="chip">Suspense</span>
-            <span class="chip rating">3,5/5</span>
-          </div>
-        </div>
-        <div class="director">Director: Kiyoshi Kurosawa</div>
-        <p class="sinopsis">Ryosuke Yoshii deja su trabajo en una fábrica para dedicarse a la reventa en línea. Su negocio prospera y se muda al campo con su novia, pero empiezan a ocurrir incidentes sospechosos que empujan la historia a un territorio oscuro y peligroso.</p>
-      </article>
-
-      
-
-      <article class="card" data-title="Demons" data-year="1971" data-rating="4.2" data-language="Japonés" data-genres="Terror,Acción">
-        <h3>Demons <span class="meta">(1971)</span></h3>
-        <div class="meta">
-          <span>Japonés</span>
-          <div class="chips">
-            <span class="chip">Terror</span>
-            <span class="chip">Acción</span>
-            <span class="chip rating">4,2/5</span>
-          </div>
-        </div>
-        <div class="director">Director: Toshio Matsumoto</div>
-        <p class="sinopsis">Gengobe, un samurái ronin, busca venganza tras ser engañado y despojado de sus bienes por una geisha y su esposo.</p>
-      </article>
-
-      <article class="card" data-title="La Haine" data-year="1995" data-rating="4.5" data-language="Francés" data-genres="Crimen,Suspense">
-        <h3>La Haine <span class="meta">(1995)</span></h3>
-        <div class="meta">
-          <span>Francés</span>
-          <div class="chips">
-            <span class="chip">Crimen</span>
-            <span class="chip">Suspense</span>
-            <span class="chip rating">4,5/5</span>
-          </div>
-        </div>
-        <div class="director">Director: Mathieu Kassovitz</div>
-        <p class="sinopsis">Tras una noche de disturbios en las afueras de París, tres amigos —Vinz, Saïd y Hubert— afrontan las tensiones con la policía después de que su amigo Abdel resulte herido.</p>
-      </article>
-
-      <article class="card" data-title="Magazine Dreams" data-year="2023" data-rating="3.7" data-language="Inglés" data-genres="Drama">
-        <h3>Magazine Dreams <span class="meta">(2023)</span></h3>
-        <div class="meta">
-          <span>Inglés</span>
-          <div class="chips">
-            <span class="chip">Drama</span>
-            <span class="chip rating">3,7/5</span>
-          </div>
-        </div>
-        <div class="director">Director: Elijah Bynum</div>
-        <p class="sinopsis">Un culturista amateur lucha por encontrar un vínculo humano en una exploración de la fama y la violencia, ignorando incluso las advertencias médicas sobre el daño que se está causando.</p>
-      </article>
-
-      <article class="card" data-title="Materialists" data-year="2025" data-rating="3.1" data-language="Inglés" data-genres="Romance,Comedia">
-        <h3>Materialists <span class="meta">(2025)</span></h3>
-        <div class="meta">
-          <span>Inglés</span>
-          <div class="chips">
-            <span class="chip">Romance</span>
-            <span class="chip">Comedia</span>
-            <span class="chip rating">3,1/5</span>
-          </div>
-        </div>
-        <div class="director">Directora: Celine Song</div>
-        <p class="sinopsis">Lucy, casamentera en Nueva York, se ve atrapada en un triángulo amoroso con Harry, un financiero multimillonario, y John, su exnovio actor.</p>
-      </article>
-
-      <article class="card" data-title="Mystic River" data-year="2003" data-rating="3.9" data-language="Inglés" data-genres="Drama,Crimen">
-        <h3>Mystic River <span class="meta">(2003)</span></h3>
-        <div class="meta">
-          <span>Inglés</span>
-          <div class="chips">
-            <span class="chip">Drama</span>
-            <span class="chip">Crimen</span>
-            <span class="chip rating">3,9/5</span>
-          </div>
-        </div>
-        <div class="director">Director: Clint Eastwood</div>
-        <p class="sinopsis">La amistad de tres hombres se resquebraja cuando uno de ellos sufre una tragedia familiar que reabre heridas del pasado.</p>
-      </article>
-
-      <article class="card" data-title="Nueve Reinas" data-year="2000" data-rating="4.1" data-language="Argentino" data-genres="Thriller,Drama">
-        <h3>Nueve Reinas <span class="meta">(2000)</span></h3>
-        <div class="meta">
-          <span>Argentino</span>
-          <div class="chips">
-            <span class="chip">Thriller</span>
-            <span class="chip">Drama</span>
-            <span class="chip rating">4,1/5</span>
-          </div>
-        </div>
-        <div class="director">Director: Fabián Bielinsky</div>
-        <p class="sinopsis">En Buenos Aires, Juan y Marcos, dos estafadores de distinta escuela, se ven envueltos en un golpe que podría hacerlos millonarios… si lo ejecutan en menos de un día.</p>
-      </article>
-
-      <article class="card" data-title="Paris, Texas" data-year="1984" data-rating="4.4" data-language="Inglés" data-genres="Drama,Cine Indep">
-        <h3>Paris, Texas <span class="meta">(1984)</span></h3>
-        <div class="meta">
-          <span>Inglés</span>
-          <div class="chips">
-            <span class="chip">Drama</span>
-            <span class="chip">Cine Indep</span>
-            <span class="chip rating">4,4/5</span>
-          </div>
-        </div>
-        <div class="director">Director: Wim Wenders</div>
-        <p class="sinopsis">Un hombre aparece caminando por el desierto texano sin recordar quién es. Al reencontrarse con su hermano, intenta recomponer los fragmentos de su vida y su familia.</p>
-      </article>
-
-      <article class="card" data-title="Some like it hot" data-year="1959" data-rating="4.3" data-language="Inglés" data-genres="Comedia">
-        <h3>Some Like It Hot <span class="meta">(1959)</span></h3>
-        <div class="meta">
-          <span>Inglés</span>
-          <div class="chips">
-            <span class="chip">Comedia</span>
-            <span class="chip rating">4,3/5</span>
-          </div>
-        </div>
-        <div class="director">Director: Billy Wilder</div>
-        <p class="sinopsis">En plena Ley Seca, dos músicos huyen de la mafia disfrazándose de mujeres e integrándose en una orquesta femenina, con enredos románticos inolvidables.</p>
-      </article>
-
-      <article class="card" data-title="Ne Zha" data-year="2019" data-rating="3.6" data-language="Ingles" data-genres="Animación,Fantástico">
-        <h3>Ne Zha <span class="meta">(2019)</span></h3>
-        <div class="meta">
-          <span>Ingles</span>
-          <div class="chips">
-            <span class="chip">Animación</span>
-            <span class="chip">Fantástico</span>
-            <span class="chip rating">3,6/5</span>
-          </div>
-        </div>
-        <div class="director">Director: Yu Yang</div>
-        <p class="sinopsis">Primus descubre un collar Yuan donde se mezclan un espíritu y un demonio. El espíritu se reencarna para asistir al Rey Zhou; el demonio existe solo para el mal.</p>
-      </article>
-
-      <article class="card" data-title="Ne Zha II" data-year="2025" data-rating="4.1" data-language="Chino" data-genres="Animación,Fantástico">
-        <h3>Ne Zha II <span class="meta">(2025)</span></h3>
-        <div class="meta">
-          <span>Chino</span>
-          <div class="chips">
-            <span class="chip">Animación</span>
-            <span class="chip">Fantástico</span>
-            <span class="chip rating">4,1/5</span>
-          </div>
-        </div>
-        <div class="director">Director: Yu Yang</div>
-        <p class="sinopsis">Ne Zha forja una alianza con el príncipe dragón Ao Bing para proteger a sus clanes. Tras una batalla devastadora, emprende una búsqueda por un elixir que salve a su amigo y evite una guerra.</p>
-      </article>
-
-      <article class="card" data-title="Lawrence of Arabia" data-year="1962" data-rating="4.4" data-language="Inglés" data-genres="Aventuras,Drama bélico">
-        <h3>Lawrence of Arabia <span class="meta">(1962)</span></h3>
-        <div class="meta">
-          <span>Inglés</span>
-          <div class="chips">
-            <span class="chip">Aventuras</span>
-            <span class="chip">Drama bélico</span>
-            <span class="chip rating">4,4/5</span>
-          </div>
-        </div>
-        <div class="director">Director: David Lean</div>
-        <p class="sinopsis">En 1917, T. E. Lawrence es enviado al desierto para apoyar a los árabes contra Turquía, ganándose su respeto mientras choca con sus superiores británicos.</p>
-      </article>
-
-      <article class="card" data-title="Superman" data-year="2025" data-rating="3.9" data-language="Inglés" data-genres="Ciencia Ficción,Acción">
-        <h3>Superman <span class="meta">(2025)</span></h3>
-        <div class="meta">
-          <span>Inglés</span>
-          <div class="chips">
-            <span class="chip">Ciencia Ficción</span>
-            <span class="chip">Acción</span>
-            <span class="chip rating">3,9/5</span>
-          </div>
-        </div>
-        <div class="director">Director: James Gunn</div>
-        <p class="sinopsis">En un mundo cínico que duda de la bondad, Clark Kent intenta conciliar su herencia kryptoniana con su crianza en Smallville mientras protege a la humanidad.</p>
-      </article>
-
-      <article class="card" data-title="Sinners" data-year="2025" data-rating="4.1" data-language="Ingles" data-genres="Terror,Thriller">
-        <h3>Sinners <span class="meta">(2025)</span></h3>
-        <div class="meta">
-          <span>Ingles</span>
-          <div class="chips">
-            <span class="chip">Terror</span>
-            <span class="chip">Thriller</span>
-            <span class="chip rating">4,1/5</span>
-          </div>
-        </div>
-        <div class="director">Director: Ryan Coogler</div>
-        <p class="sinopsis">Dos hermanos gemelos regresan a su pueblo para empezar de nuevo, pero se topan con un mal mayor que los recibe con los brazos abiertos.</p>
-      </article>
-
-      <article class="card" data-title="Superbad" data-year="2007" data-rating="3.9" data-language="Inglés" data-genres="Comedia">
-        <h3>Superbad (Supersalidos) <span class="meta">(2007)</span></h3>
-        <div class="meta">
-          <span>Inglés</span>
-          <div class="chips">
-            <span class="chip">Comedia</span>
-            <span class="chip rating">3,9/5</span>
-          </div>
-        </div>
-        <div class="director">Director: Greg Mottola</div>
-        <p class="sinopsis">En una de sus últimas noches de instituto, Evan y Seth se embarcan en una caótica misión para conseguir alcohol para la fiesta donde esperan conquistar a sus crushes.</p>
-      </article>
-
-      <article class="card" data-title="Moonlight" data-year="2016" data-rating="4.2" data-language="Inglés" data-genres="Drama">
-        <h3>Moonlight <span class="meta">(2016)</span></h3>
-        <div class="meta">
-          <span>Inglés</span>
-          <div class="chips">
-            <span class="chip">Drama</span>
-            <span class="chip rating">4,2/5</span>
-          </div>
-        </div>
-        <div class="director">Director: Barry Jenkins</div>
-        <p class="sinopsis">Chiron crece en un entorno duro en Miami, lidiando con el acoso, la identidad y la adicción de su madre, mientras busca su lugar en el mundo.</p>
-      </article>
-
-
-            <article class="card" data-title="Everything Everywhere All at Once" data-year="2022" data-rating="4.3" data-language="Inglés" data-genres="Comedia">
-        <h3>Everything Everywhere All at Once <span class="meta">(2022)</span></h3>
-        <div class="meta">
-          <span>Inglés</span>
-          <div class="chips">
-            <span class="chip">Comedia</span>
-            <span class="chip rating">4,3/5</span>
-          </div>
-        </div>
-        <div class="director">Directores: Daniel Kwan, Daniel Scheinert</div>
-        <p class="sinopsis">Una ruptura interdimensional arrastra a Evelyn a una aventura multiversal donde deberá canalizar habilidades inesperadas para salvarlo todo.</p>
-      </article>
-
-      <article class="card" data-title="Hoodwinked!" data-year="2005" data-rating="3.4" data-language="Inglés" data-genres="Animación,Comedia">
-        <h3>Hoodwinked! <span class="meta">(2005)</span></h3>
-        <div class="meta">
-          <span>Inglés</span>
-          <div class="chips">
-            <span class="chip">Animación</span>
-            <span class="chip">Comedia</span>
-            <span class="chip rating">3,4/5</span>
-          </div>
-        </div>
-        <div class="director">Directores: Cory Edwards, Todd Edwards, Tony Leech</div>
-        <p class="sinopsis">La historia de Caperucita Roja contada desde múltiples perspectivas. Un detective investiga el incidente en la casa de la abuela, con testimonios del lobo, el leñador y la propia Caperucita.</p>
-      </article>
-
-      <article class="card" data-title="A Taxi Driver" data-year="2017" data-rating="4.2" data-language="Coreano" data-genres="Drama,Drama bélico">
-        <h3>A Taxi Driver <span class="meta">(2017)</span></h3>
-        <div class="meta">
-          <span>Coreano</span>
-          <div class="chips">
-            <span class="chip">Drama</span>
-            <span class="chip">Drama bélico</span>
-            <span class="chip rating">4,2/5</span>
-          </div>
-        </div>
-        <div class="director">Director: Jang Hoon</div>
-        <p class="sinopsis">En 1980, un taxista de Seúl lleva a un periodista alemán a Gwangju sin saber que se adentrará en una revuelta estudiantil que marcará la historia moderna de Corea del Sur.</p>
-      </article>
-
-      <article class="card" data-title="Kill Bill: Vol. 1" data-year="2003" data-rating="4.2" data-language="Inglés" data-genres="Acción,Thriller">
-        <h3>Kill Bill: Vol. 1 <span class="meta">(2003)</span></h3>
-        <div class="meta">
-          <span>Inglés</span>
-          <div class="chips">
-            <span class="chip">Acción</span>
-            <span class="chip">Thriller</span>
-            <span class="chip rating">4,2/5</span>
-          </div>
-        </div>
-        <div class="director">Director: Quentin Tarantino</div>
-        <p class="sinopsis">La Novia despierta de un coma de cuatro años con una misión: vengarse de Bill y su escuadrón letal de asesinas que trataron de matarla el día de su boda.</p>
-      </article>
-
-      <article class="card" data-title="Tropic Thunder" data-year="2008" data-rating="3.6" data-language="Inglés" data-genres="Comedia,Acción">
-        <h3>Tropic Thunder <span class="meta">(2008)</span></h3>
-        <div class="meta">
-          <span>Inglés</span>
-          <div class="chips">
-            <span class="chip">Comedia</span>
-            <span class="chip">Acción</span>
-            <span class="chip rating">3,6/5</span>
-          </div>
-        </div>
-        <div class="director">Director: Ben Stiller</div>
-        <p class="sinopsis">Un grupo de actores pretenciosos filma una película bélica en la jungla, pero se ven envueltos en un conflicto real cuando son confundidos con soldados.</p>
-      </article>
-
-      <article class="card" data-title="Fight Club" data-year="1999" data-rating="4.3" data-language="Inglés" data-genres="Drama,Thriller">
-        <h3>Fight Club <span class="meta">(1999)</span></h3>
-        <div class="meta">
-          <span>Inglés</span>
-          <div class="chips">
-            <span class="chip">Drama</span>
-            <span class="chip">Thriller</span>
-            <span class="chip rating">4,3/5</span>
-          </div>
-        </div>
-        <div class="director">Director: David Fincher</div>
-        <p class="sinopsis">Un oficinista insomne forma un club de pelea clandestino con un vendedor de jabón carismático, desatando una espiral de caos y autodestrucción.</p>
-      </article>
-
-      <article class="card" data-title="Dead Poets Society" data-year="1989" data-rating="4.3" data-language="Inglés" data-genres="Drama">
-        <h3>Dead Poets Society <span class="meta">(1989)</span></h3>
-        <div class="meta">
-          <span>Inglés</span>
-          <div class="chips">
-            <span class="chip">Drama</span>
-            <span class="chip rating">4,3/5</span>
-          </div>
-        </div>
-        <div class="director">Director: Peter Weir</div>
-        <p class="sinopsis">En una academia preparatoria conservadora, un profesor de literatura inspira a sus estudiantes a pensar por sí mismos y vivir la vida al máximo a través de la poesía.</p>
-      </article>
-
-      <article class="card" data-title="Mother" data-year="2009" data-rating="4.3" data-language="Coreano" data-genres="Thriller,Drama">
-        <h3>Mother <span class="meta">(2009)</span></h3>
-        <div class="meta">
-          <span>Coreano</span>
-          <div class="chips">
-            <span class="chip">Thriller</span>
-            <span class="chip">Drama</span>
-            <span class="chip rating">4,3/5</span>
-          </div>
-        </div>
-        <div class="director">Director: Bong Joon-ho</div>
-        <p class="sinopsis">Una madre devota investiga por su cuenta para demostrar la inocencia de su hijo con discapacidad mental, acusado de asesinato en un pequeño pueblo.</p>
-      </article>
-
-      <article class="card" data-title="Wolfs" data-year="2024" data-rating="3.1" data-language="Inglés" data-genres="Acción,Comedia">
-        <h3>Wolfs <span class="meta">(2024)</span></h3>
-        <div class="meta">
-          <span>Inglés</span>
-          <div class="chips">
-            <span class="chip">Acción</span>
-            <span class="chip">Comedia</span>
-            <span class="chip rating">3,1/5</span>
-          </div>
-        </div>
-        <div class="director">Director: Jon Watts</div>
-        <p class="sinopsis">Dos "limpiadores" profesionales se ven obligados a trabajar juntos para cubrir un crimen de alto perfil en la misma noche en Nueva York.</p>
-      </article>
-
-      <article class="card" data-title="Another Round" data-year="2020" data-rating="4.1" data-language="Danés" data-genres="Drama,Comedia">
-        <h3>Another Round <span class="meta">(2020)</span></h3>
-        <div class="meta">
-          <span>Danés</span>
-          <div class="chips">
-            <span class="chip">Drama</span>
-            <span class="chip">Comedia</span>
-            <span class="chip rating">4,1/5</span>
-          </div>
-        </div>
-        <div class="director">Director: Thomas Vinterberg</div>
-        <p class="sinopsis">Cuatro profesores de instituto deciden probar una teoría sobre mantener un nivel constante de alcohol en sangre para mejorar su rendimiento profesional y personal.</p>
-      </article>
-
-      <article class="card" data-title="Bronson" data-year="2008" data-rating="3.6" data-language="Inglés" data-genres="Drama,Crimen">
-        <h3>Bronson <span class="meta">(2008)</span></h3>
-        <div class="meta">
-          <span>Inglés</span>
-          <div class="chips">
-            <span class="chip">Drama</span>
-            <span class="chip">Crimen</span>
-            <span class="chip rating">3,6/5</span>
-          </div>
-        </div>
-        <div class="director">Director: Nicolas Winding Refn</div>
-        <p class="sinopsis">La historia surrealista de Michael Peterson, quien se convirtió en el prisionero más violento de Gran Bretaña y adoptó el nombre de Charles Bronson.</p>
-      </article>
-
-      <article class="card" data-title="Kill Bill: Vol. 2" data-year="2004" data-rating="4.1" data-language="Inglés" data-genres="Acción,Thriller">
-        <h3>Kill Bill: Vol. 2 <span class="meta">(2004)</span></h3>
-        <div class="meta">
-          <span>Inglés</span>
-          <div class="chips">
-            <span class="chip">Acción</span>
-            <span class="chip">Thriller</span>
-            <span class="chip rating">4,1/5</span>
-          </div>
-        </div>
-        <div class="director">Director: Quentin Tarantino</div>
-        <p class="sinopsis">La Novia continúa su búsqueda vengativa contra los miembros restantes del Escuadrón Víbora Mortal, culminando en el enfrentamiento final con Bill.</p>
-      </article>
-
-      <article class="card" data-title="Nope" data-year="2022" data-rating="3.7" data-language="Inglés" data-genres="Ciencia Ficción,Terror">
-        <h3>Nope <span class="meta">(2022)</span></h3>
-        <div class="meta">
-          <span>Inglés</span>
-          <div class="chips">
-            <span class="chip">Ciencia Ficción</span>
-            <span class="chip">Terror</span>
-            <span class="chip rating">3,7/5</span>
-          </div>
-        </div>
-        <div class="director">Director: Jordan Peele</div>
-        <p class="sinopsis">Los hermanos OJ y Emerald Haywood intentan capturar evidencia de un OVNI que acecha su rancho de caballos en California, enfrentándose a una presencia misteriosa.</p>
-      </article>
-
-      <article class="card" data-title="Arrival" data-year="2016" data-rating="4.1" data-language="Inglés" data-genres="Ciencia Ficción,Drama">
-        <h3>Arrival <span class="meta">(2016)</span></h3>
-        <div class="meta">
-          <span>Inglés</span>
-          <div class="chips">
-            <span class="chip">Ciencia Ficción</span>
-            <span class="chip">Drama</span>
-            <span class="chip rating">4,1/5</span>
-          </div>
-        </div>
-        <div class="director">Director: Denis Villeneuve</div>
-        <p class="sinopsis">Una lingüista es reclutada por el ejército para comunicarse con seres extraterrestres que han llegado a la Tierra, descubriendo que el lenguaje puede cambiar la percepción del tiempo.</p>
-      </article>
-
-      <article class="card" data-title="Ran" data-year="1985" data-rating="4.6" data-language="Japonés" data-genres="Drama,Drama bélico">
-        <h3>Ran <span class="meta">(1985)</span></h3>
-        <div class="meta">
-          <span>Japonés</span>
-          <div class="chips">
-            <span class="chip">Drama</span>
-            <span class="chip">Drama bélico</span>
-            <span class="chip rating">4,6/5</span>
-          </div>
-        </div>
-        <div class="director">Director: Akira Kurosawa</div>
-        <p class="sinopsis">Un señor de la guerra japonés del siglo XVI decide abdicar y dividir su reino entre sus tres hijos, desatando traición, guerra y caos familiar en esta adaptación de El Rey Lear.</p>
-      </article>
-
-      <article class="card" data-title="The Wild Robot" data-year="2024" data-rating="4.2" data-language="Inglés" data-genres="Animación,Ciencia Ficción">
-        <h3>The Wild Robot <span class="meta">(2024)</span></h3>
-        <div class="meta">
-          <span>Inglés</span>
-          <div class="chips">
-            <span class="chip">Animación</span>
-            <span class="chip">Ciencia Ficción</span>
-            <span class="chip rating">4,2/5</span>
-          </div>
-        </div>
-        <div class="director">Director: Chris Sanders</div>
-        <p class="sinopsis">El épico viaje de un robot -la unidad 7134 de Roz,'Roz' para abreviar- que naufraga en una isla deshabitada y debe aprender a adaptarse al duro entorno, entablando gradualmente relaciones con los animales de la isla y convirtiéndose en madre adoptiva de un pequeño ganso huérfano.</p>
-      </article>
-
     </section>
 
     </section>
     <div class="no-results" id="noResults">No hay resultados con los filtros actuales.</div>
   </main>
 
-  <script>
-    const q = document.getElementById('q');
-    const genre = document.getElementById('genre');
-    const lang = document.getElementById('lang');
-    const sortSel = document.getElementById('sort');
-    const grid = document.getElementById('grid');
+<script>
+  // === Script original de filtros y ordenar ===
+  const q = document.getElementById('q');
+  const genre = document.getElementById('genre');
+  const lang = document.getElementById('lang');
+  const sortSel = document.getElementById('sort');
+  const grid = document.getElementById('grid');
+  const count = document.querySelector('.count');
+  const noResults = document.getElementById('noResults');
+
+  function applyFilters(){
+    const term = q.value.trim().toLowerCase();
+    const g = (genre.value || '').toLowerCase();
+    const l = (lang.value || '').toLowerCase();
+
+    let visible = 0;
     const cards = Array.from(grid.querySelectorAll('.card'));
-    const count = document.querySelector('.count');
-    const noResults = document.getElementById('noResults');
+    cards.forEach(card=>{
+      const title = card.dataset.title.toLowerCase();
+      const director = (card.querySelector('.director')?.textContent || '').toLowerCase();
+      const sinopsis = (card.querySelector('.sinopsis')?.textContent || '').toLowerCase();
+      const genres = (card.dataset.genres || '').toLowerCase();
+      const language = (card.dataset.language || '').toLowerCase();
 
-    function applyFilters(){
-      const term = q.value.trim().toLowerCase();
-      const g = (genre.value || '').toLowerCase();
-      const l = (lang.value || '').toLowerCase();
+      const matchesTerm = !term || title.includes(term) || director.includes(term) || sinopsis.includes(term);
+      const matchesGenre = !g || genres.split(',').some(x=>x.trim()===g);
+      const matchesLang = !l || language===l;
 
-      let visible = 0;
-      cards.forEach(card=>{
-        const title = card.dataset.title.toLowerCase();
-        const director = (card.querySelector('.director')?.textContent || '').toLowerCase();
-        const sinopsis = (card.querySelector('.sinopsis')?.textContent || '').toLowerCase();
-        const genres = (card.dataset.genres || '').toLowerCase();
-        const language = (card.dataset.language || '').toLowerCase();
+      const show = matchesTerm && matchesGenre && matchesLang;
+      card.style.display = show ? '' : 'none';
+      if(show) visible++;
+    });
 
-        const matchesTerm = !term || title.includes(term) || director.includes(term) || sinopsis.includes(term);
-        const matchesGenre = !g || genres.split(',').some(x=>x.trim()===g);
-        const matchesLang = !l || language===l;
+    count.textContent = visible;
+    noResults.style.display = visible ? 'none' : 'block';
+  }
 
-        const show = matchesTerm && matchesGenre && matchesLang;
-        card.style.display = show ? '' : 'none';
-        if(show) visible++;
-      });
+  function applySort(){
+    const val = sortSel.value;
+    const items = Array.from(grid.children).filter(el=>el.classList.contains('card') && el.style.display!== 'none');
+    const cmp = {
+      'year-desc': (a,b)=> +b.dataset.year - +a.dataset.year,
+      'year-asc': (a,b)=> +a.dataset.year - +b.dataset.year,
+      'rating-desc': (a,b)=> +b.dataset.rating - +a.dataset.rating,
+      'rating-asc': (a,b)=> +a.dataset.rating - +b.dataset.rating,
+      'title-asc': (a,b)=> a.dataset.title.localeCompare(b.dataset.title)
+    }[val];
+    if(!cmp) return;
+    items.sort(cmp).forEach(el=>grid.appendChild(el));
+  }
 
-      count.textContent = visible;
-      noResults.style.display = visible ? 'none' : 'block';
+  function initFilters(){
+    q.addEventListener('input', ()=>{applyFilters(); applySort();});
+    genre.addEventListener('change', ()=>{applyFilters(); applySort();});
+    lang.addEventListener('change', ()=>{applyFilters(); applySort();});
+    sortSel.addEventListener('change', ()=>{applySort();});
+  }
+
+  initFilters();
+</script>
+
+<script>
+  // === Nuevo script para cargar películas desde TMDB ===
+  const API_KEY = "ce0aa6e8cc13719a406cbd638a573359"; // ⬅️ pon aquí tu API de TMDB
+
+  // Mapa oficial de géneros TMDB (id → nombre)
+  const GENRES = {
+    28: "Acción",
+    12: "Aventuras",
+    16: "Animación",
+    35: "Comedia",
+    80: "Crimen",
+    99: "Documental",
+    18: "Drama",
+    10751: "Familia",
+    14: "Fantástico",
+    36: "Historia",
+    27: "Terror",
+    10402: "Música",
+    9648: "Suspense",
+    10749: "Romance",
+    878: "Ciencia Ficción",
+    10770: "TV Movie",
+    53: "Thriller",
+    10752: "Drama bélico",
+    37: "Western"
+  };
+
+  const movies = [
+    "tmdb_id:1244244",
+    "tmdb_id:104548",
+    "La Haine",
+    "Magazine Dreams",
+    "Materialists",
+    "Mystic River",
+    "Nueve Reinas",
+    "Paris, Texas",
+    "Some Like It Hot",
+    "tmdb_id:615453",
+    "tmdb_id:980477",
+    "Lawrence of Arabia",
+    "Superman",
+    "Sinners",
+    "Superbad",
+    "Moonlight",
+    "Everything Everywhere All at Once",
+    "Hoodwinked!",
+    "A Taxi Driver",
+    "Kill Bill: Vol. 1",
+    "Tropic Thunder",
+    "Fight Club",
+    "Dead Poets Society",
+    "tmdb_id:30018",
+    "Wolfs",
+    "tmdb_id:580175",
+    "Bronson",
+    "Kill Bill: Vol. 2",
+    "Nope",
+    "Arrival",
+    "tmdb_id:11645"
+  ];
+
+async function fetchMovie(identifier) {
+    let url;
+    if (identifier.startsWith("tmdb_id:")) {
+        const movieId = identifier.split(":")[1];
+        url = `https://api.themoviedb.org/3/movie/${movieId}?api_key=${API_KEY}&language=es-ES`;
+    } else {
+        url = `https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&language=es-ES&query=${encodeURIComponent(identifier)}`;
     }
 
-    function applySort(){
-      const val = sortSel.value;
-      const items = Array.from(grid.children).filter(el=>el.classList.contains('card') && el.style.display!== 'none');
-      const cmp = {
-        'year-desc': (a,b)=> +b.dataset.year - +a.dataset.year,
-        'year-asc': (a,b)=> +a.dataset.year - +b.dataset.year,
-        'rating-desc': (a,b)=> +b.dataset.rating - +a.dataset.rating,
-        'rating-asc': (a,b)=> +a.dataset.rating - +b.dataset.rating,
-        'title-asc': (a,b)=> a.dataset.title.localeCompare(b.dataset.title)
-      }[val];
-      if(!cmp) return;
-      items.sort(cmp).forEach(el=>grid.appendChild(el));
-    }
+    try {
+        const res = await fetch(url);
+        const data = await res.json();
+        let movieData;
 
-    function init(){
-      count.textContent = cards.length;
-      q.addEventListener('input', ()=>{applyFilters(); applySort();});
-      genre.addEventListener('change', ()=>{applyFilters(); applySort();});
-      lang.addEventListener('change', ()=>{applyFilters(); applySort();});
-      sortSel.addEventListener('change', ()=>{applySort();});
-    }
+        if (identifier.startsWith("tmdb_id:")) {
+            movieData = data;
+        } else {
+            if (data.results && data.results.length > 0) {
+                movieData = data.results[0];
+            } else {
+                console.warn(`⚠️ No se encontraron resultados para: "${identifier}"`);
+                return;
+            }
+        }
+        
+        if (movieData) {
+            // convertir los géneros
+            const genreNames = (movieData.genre_ids || [])
+                .map(id => GENRES[id] || "")
+                .filter(Boolean);
 
-    init();
-  </script>
+            const card = document.createElement('article');
+            card.className = 'card';
+            card.dataset.title = movieData.title;
+            card.dataset.year = (movieData.release_date || "").split("-")[0] || "";
+            card.dataset.rating = movieData.vote_average;
+            card.dataset.language = movieData.original_language;
+            card.dataset.genres = genreNames.join(",");
+
+            card.innerHTML = `
+                <div class="poster-container">
+                ${movieData.poster_path 
+                    ? `<img src="https://image.tmdb.org/t/p/w500${movieData.poster_path}" alt="${movieData.title}" class="poster">` 
+                    : `<div class="poster-placeholder">Sin póster</div>`}
+                </div>
+                <div class="content">
+                <h3>${movieData.title} <span class="meta">(${(movieData.release_date || "").split("-")[0]})</span></h3>
+                <div class="meta">
+                    <span>${movieData.original_language.toUpperCase()}</span>
+                    <div class="chips">
+                    ${genreNames.map(g=>`<span class="chip">${g}</span>`).join("")}
+                    <span class="chip rating">${movieData.vote_average.toFixed(1)}/10</span>
+                    </div>
+                </div>
+                <p class="sinopsis">${movieData.overview || "Sinopsis no disponible."}</p>
+                <div class="actions">
+                    <a href="https://www.themoviedb.org/movie/${movieData.id}" class="btn btn-info" target="_blank">TMDB</a>
+                </div>
+                </div>
+            `;
+
+            grid.appendChild(card);
+        }
+    } catch (error) {
+        console.error(`❌ Error al cargar la película "${identifier}":`, error);
+    }
+  }
+
+  async function loadMovies() {
+    for (const identifier of movies) {
+      await fetchMovie(identifier);
+    }
+    // actualizar contador inicial
+    document.querySelector('.count').textContent = grid.querySelectorAll('.card').length;
+    applyFilters();
+    applySort();
+  }
+
+  loadMovies();
+</script>
 </body>
 </html>
 
