@@ -201,7 +201,7 @@
           <option>Thriller</option>
         </select>
         <select id="lang">
-         <option value="">Idioma (todos)</option>
+          <option value="">Idioma (todos)</option>
           <option value="en">Inglés</option>
           <option value="fr">Francés</option>
           <option value="ja">Japonés</option>
@@ -324,6 +324,7 @@
   };
 
   const movies = [
+    { id: "tmdb_id:911430",  /*F1 The Movie*/ downloadUrl: "https://univmurcia-my.sharepoint.com/:f:/g/personal/l_ruizllamas_um_es/EsoDsLpiRPVPpplXpUUKCE4BH3YdlS3Iuu0pvMSOP3FH8Q?e=dHegWD" },
     { id: "tmdb_id:1244244", /*Cloud*/ downloadUrl: "https://univmurcia-my.sharepoint.com/:f:/g/personal/l_ruizllamas_um_es/EocrXMU9qklHgVNF7PVDTGoBNjlzD4mECebGs3ZUR_w3Ag?e=dfIALI" },
     { id: "tmdb_id:104548", /*Demons (Pandemonium)*/ downloadUrl: "https://univmurcia-my.sharepoint.com/:f:/g/personal/l_ruizllamas_um_es/EuIx5XuiSJlGhwr3NN07LMcB9y9dkw_E9mukt0YSnVce5g?e=rxHypF"},
     { id: "La Haine", downloadUrl: "https://univmurcia-my.sharepoint.com/:f:/g/personal/l_ruizllamas_um_es/Ei0SG_yQHGNDg6IOlbkMN_MBSAVpRLUB7Yu8jSQadXna_w?e=7aqW0E" },
@@ -360,7 +361,6 @@
     { id: "tmdb_id:3782", /*Ikiru*/ downloadUrl: "https://univmurcia-my.sharepoint.com/:f:/g/personal/l_ruizllamas_um_es/EivYwLP7OyFOuLy6hIvwZV8BdbW4Bfy_4lkq_KF1_I7edQ?e=hPwXo6" },
     { id: "tmdb_id:6977", /*No country for old men*/ downloadUrl: "https://univmurcia-my.sharepoint.com/:f:/g/personal/l_ruizllamas_um_es/EgMfe3bkCsVFu6rPkNXwuesBYEIUUFmQ7YuGzSm2d6nQDQ?e=uZzMfR"},
     { id: "tmdb_id:1100099", /*We live in time*/ downloadUrl: "https://univmurcia-my.sharepoint.com/:f:/g/personal/l_ruizllamas_um_es/Ei81zZTU6dJOphDkf5NvhOYBPLUvaH52Mn9QkAX2EPNrvg?e=nQS59o"}
-
   ];
 
 async function fetchMovie(movieObject) {
@@ -498,4 +498,3 @@ async function fetchMovie(movieObject) {
 </script>
 </body>
 </html>
-
