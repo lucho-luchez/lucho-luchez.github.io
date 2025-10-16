@@ -1,9 +1,10 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Nuevas Adiciones al Videoclub - Ultimos meses 2025</title>
+  <title>Videoclub</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Bebas+Neue&display=swap" rel="stylesheet">
@@ -47,6 +48,7 @@
       padding:12px 14px; border-radius:12px; outline:none; font-size:14px;
     }
     .tools input:focus,.tools select:focus{border-color:var(--ring); box-shadow:0 0 0 3px rgba(59,130,246,.25)}
+
     .grid{display:grid; grid-template-columns: repeat( auto-fill, minmax(320px,1fr) ); gap:20px; padding:24px 20px 60px}
     .card{
       background: radial-gradient(300px 160px at 120% -20%, rgba(124,58,237,.12), transparent 50%), var(--card);
@@ -54,6 +56,7 @@
       transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
     }
     .card:hover{ transform: translateY(-4px); box-shadow: 0 14px 40px rgba(2,8,23,.35); border-color: rgba(99,102,241,.45) }
+
     .poster-container{
       position: relative; height: 180px; background: linear-gradient(135deg, #1e293b, #0f172a);
       overflow: hidden;
@@ -70,6 +73,7 @@
       height: 100%; background: linear-gradient(135deg, #374151, #1f2937);
       color: #9ca3af; font-size: 14px; font-weight: 500;
     }
+
     .content{
       padding: 18px;
     }
@@ -80,6 +84,7 @@
     .rating{margin-left:auto; background:linear-gradient(90deg, var(--accent), var(--accent-2)); color:#0b1022; font-weight:800}
     .director{font-weight:600; color:#cbd5ff; margin:8px 0 6px; font-size:13px}
     .sinopsis{color:#e5e7eb; font-size:13px; line-height:1.5; margin-bottom: 12px}
+
     .actions{
       display: flex; gap: 8px; margin-top: 12px;
     }
@@ -106,14 +111,17 @@
     .btn-trailer:hover{
       background: #d97706; transform: translateY(-1px);
     }
+
     .quality-badge{
       position: absolute; top: 8px; right: 8px;
       background: rgba(0,0,0,.7); color: white; padding: 4px 8px;
       border-radius: 4px; font-size: 10px; font-weight: 600;
     }
+
     .footer-note{color:#9aa5ff; font-size:12px; margin:10px 2px 0}
     .no-results{display:none; text-align:center; color:#cbd5ff; opacity:.8; padding:26px 8px}
     .count{font-weight:700}
+
     /* Estilos del modal */
     .modal {
       position: fixed;
@@ -128,6 +136,7 @@
       z-index: 1000;
       padding: 20px;
     }
+
     .modal-content {
       position: relative;
       width: 90%;
@@ -135,11 +144,13 @@
       height: auto;
       aspect-ratio: 16 / 9; /* Mantener relación de aspecto 16:9 */
     }
+
     .modal iframe {
       width: 100%;
       height: 100%;
       border: none;
     }
+
     .close-btn {
       position: absolute;
       top: 10px;
@@ -150,6 +161,8 @@
       cursor: pointer;
       z-index: 1001;
     }
+
+
     @media (max-width:720px){
       .title h1{font-size:42px}
       .tools{grid-template-columns:1fr 1fr;}
@@ -162,13 +175,12 @@
   <header>
     <div class="wrap">
       <div class="title">
-        <h1>Últimas Adiciones al Videoclub</h1>
-        <span class="badge">Ultimos Meses</span>
-        <span class="badge"><span class="count">0</span> títulos</span>
-      </div>
-      <nav>
-      <a href="../index.html">Volver al Catálogo</a>
+        <h1>Videoclub</h1>
+        <nav>
+      <a href="index.html">Catálogo completo</a> |
+      <a href="Meses/nuevoMes.html">Novedades este mes</a> |
     </nav>
+        <span class="badge"><span class="count">0</span> títulos</span>
       </div>
       <div class="tools" aria-label="Herramientas de filtrado y búsqueda">
         <input id="q" type="search" placeholder="Buscar por título, director o palabra clave…" />
@@ -209,17 +221,21 @@
       <p class="footer-note">Todos los subtítulos son en inglés. Las notas provienen de Letterboxd (cuando aplica).</p>
     </div>
   </header>
+
   <main class="wrap">
     <section class="grid" id="grid">
     </section>
     <div class="no-results" id="noResults">No hay resultados con los filtros actuales.</div>
   </main>
+
   <div id="trailerModal" class="modal">
     <span class="close-btn">×</span>
     <div class="modal-content">
       <iframe id="trailerPlayer" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
     </div>
   </div>
+
+
 <script>
   // === Script original de filtros y ordenar ===
   const q = document.getElementById('q');
@@ -229,10 +245,12 @@
   const grid = document.getElementById('grid');
   const count = document.querySelector('.count');
   const noResults = document.getElementById('noResults');
+
   function applyFilters(){
     const term = q.value.trim().toLowerCase();
     const g = (genre.value || '').toLowerCase();
     const l = (lang.value || '').toLowerCase();
+
     let visible = 0;
     const cards = Array.from(grid.querySelectorAll('.card'));
     cards.forEach(card=>{
@@ -241,16 +259,20 @@
       const sinopsis = (card.querySelector('.sinopsis')?.textContent || '').toLowerCase();
       const genres = (card.dataset.genres || '').toLowerCase();
       const language = (card.dataset.language || '').toLowerCase();
+
       const matchesTerm = !term || title.includes(term) || director.includes(term) || sinopsis.includes(term);
       const matchesGenre = !g || genres.split(',').some(x=>x.trim()===g);
       const matchesLang = !l || language===l;
+
       const show = matchesTerm && matchesGenre && matchesLang;
       card.style.display = show ? '' : 'none';
       if(show) visible++;
     });
+
     count.textContent = visible;
     noResults.style.display = visible ? 'none' : 'block';
   }
+
   function applySort(){
     const val = sortSel.value;
     const items = Array.from(grid.children).filter(el=>el.classList.contains('card') && el.style.display!== 'none');
@@ -264,17 +286,21 @@
     if(!cmp) return;
     items.sort(cmp).forEach(el=>grid.appendChild(el));
   }
+
   function initFilters(){
     q.addEventListener('input', ()=>{applyFilters(); applySort();});
     genre.addEventListener('change', ()=>{applyFilters(); applySort();});
     lang.addEventListener('change', ()=>{applyFilters(); applySort();});
     sortSel.addEventListener('change', ()=>{applySort();});
   }
+
   initFilters();
 </script>
+
 <script>
   // === Nuevo script para cargar películas desde TMDB ===
   const API_KEY = "ce0aa6e8cc13719a406cbd638a573359"; // ⬅️ pon aquí tu API de TMDB
+
   // Mapa oficial de géneros TMDB (id → nombre)
   const GENRES = {
     28: "Acción",
@@ -297,22 +323,73 @@
     10752: "Drama bélico",
     37: "Western"
   };
+
   const movies = [
+    /*{ id: "tmdb_id:",  downloadUrl: ""},*/
+    //{ id: "tmdb_id:194", /*Amelie*/ downloadUrl: ""},
+    //{ id: "tmdb_id:10234", /*Funny Games*/ downloadUrl: ""},
     { id: "tmdb_id:1241921", /*A big bold beautiful journey*/ downloadUrl: "https://univmurcia-my.sharepoint.com/:f:/g/personal/l_ruizllamas_um_es/ElmDt6bAoolJnVVgNzo6X5IBidsBcNB4rQVblSQ5CNNYTw?e=onee2x"},
     { id: "tmdb_id:986097", /*HIM*/ downloadUrl: "https://univmurcia-my.sharepoint.com/:f:/g/personal/l_ruizllamas_um_es/Ehn929GzLDdKugRKhHcTkrQBSgU4HXPQ4dYKEleNyDsGZQ?e=uNv9HG"},
     { id: "tmdb_id:1242404", /*Steve*/ downloadUrl: "https://univmurcia-my.sharepoint.com/:f:/g/personal/l_ruizllamas_um_es/EvEBKwtwwnZPnj-51FWRO6gBGa8Mwvp5hrLGaD1NtosLAQ?e=Ry11Ln"},
     { id: "tmdb_id:976893", /*Perfect days*/ downloadUrl: "https://univmurcia-my.sharepoint.com/:f:/g/personal/l_ruizllamas_um_es/Etbml5RdBRZMmJnecAwRYocBx5qxdobTw9n-viH7CqtR1A?e=8wV1E9"},
     { id: "tmdb_id:157336", /*Interstellar*/ downloadUrl: "https://univmurcia-my.sharepoint.com/:f:/g/personal/l_ruizllamas_um_es/ElYcJbRl8UBNtpOyiK0kR8UB_YIM9nrJkPvmC3dzc6FrYw?e=oKjQ6y"},
     { id: "tmdb_id:1245993" /*Caught stealing*/,  downloadUrl: "https://univmurcia-my.sharepoint.com/:f:/g/personal/l_ruizllamas_um_es/Etzle-8SZ69HpYUzjUFbF2gBU1f-JHjem3XFNIgg0XQeew?e=dp7WFF"},
-    { id: "tmdb_id:11216", /*Cinema Paradiso*/  downloadUrl: "https://univmurcia-my.sharepoint.com/:f:/g/personal/l_ruizllamas_um_es/EjkejNXBWxxIk1TgSdHvYisBx6_cjinNcOa8eN2gz2u84A?e=IJkevf"},
+    { id: "tmdb_id:11216", /*SCinema Paradiso*/  downloadUrl: "https://univmurcia-my.sharepoint.com/:f:/g/personal/l_ruizllamas_um_es/EjkejNXBWxxIk1TgSdHvYisBx6_cjinNcOa8eN2gz2u84A?e=IJkevf"},
     { id: "tmdb_id:1337562", /*Splitsville*/  downloadUrl: "https://univmurcia-my.sharepoint.com/:f:/g/personal/l_ruizllamas_um_es/EmvJK6GEbl9BoZ7JZv09rXwB6jAGtvXkt7cPM0ysHO4r2Q?e=KbfXfZ"},
     { id: "tmdb_id:400617", /*Phantom thread*/  downloadUrl: "https://univmurcia-my.sharepoint.com/:f:/g/personal/l_ruizllamas_um_es/EnQPZ6wzOhpOqxgr5zclQaABx9wOHxj7ajQgxMycfzYa3Q?e=rzzyzc"},
     { id: "tmdb_id:617126", /*4 Fantasticos (2025)*/ downloadUrl: "https://univmurcia-my.sharepoint.com/:f:/g/personal/l_ruizllamas_um_es/EqKN1HQiEZFJjCGcYwhss6gBNHkmGyNEin-yy4oyUDKrow?e=x0B2RR"},
     { id: "tmdb_id:12622", /*Violent Cop*/ downloadUrl: "https://univmurcia-my.sharepoint.com/:f:/g/personal/l_ruizllamas_um_es/ElgoMIrX03NJgPEw168-nR4BxT6T1OOW7GtSSDGFgV4ggA?e=Lqy5p4"},
     { id: "tmdb_id:1242434", /*Highest 2 lowest*/ downloadUrl: "https://univmurcia-my.sharepoint.com/:f:/g/personal/l_ruizllamas_um_es/EsiWgktQoXVFopVIa_-4skwBaHvf2vTTxsD5FMGnsQC39g?e=7geHfZ"},
-    { id: "tmdb_id:25538", /*Yi Yi*/ downloadUrl: "https://univmurcia-my.sharepoint.com/:f:/g/personal/l_ruizllamas_um_es/EgWcrGpD1VdNq4UGqGcWdyIBEqWM20ewe4bh4Sqd_82tEA?e=NKMK6V"},
     { id: "tmdb_id:107", /*Snatch*/ downloadUrl: "https://univmurcia-my.sharepoint.com/:f:/g/personal/l_ruizllamas_um_es/EgK0E4DmANpFipX0A80k4NcBJyVgI0pEAC6XTDmEv5oOVw?e=4lQ0W4"},
+    { id: "tmdb_id:25538", /*Yi Yi*/ downloadUrl: "https://univmurcia-my.sharepoint.com/:f:/g/personal/l_ruizllamas_um_es/EgWcrGpD1VdNq4UGqGcWdyIBEqWM20ewe4bh4Sqd_82tEA?e=NKMK6V"},
+    { id: "tmdb_id:289", /*CasaBlanca*/ downloadUrl: "https://univmurcia-my.sharepoint.com/:f:/g/personal/l_ruizllamas_um_es/EkUSll0nBchDvCqIEpfMba4BMOf8Ak5dO6M_GI_iUtXKNQ?e=HEyjV2"},
+    { id: "tmdb_id:522627", /*The Gentlemen*/ downloadUrl: "https://univmurcia-my.sharepoint.com/:f:/g/personal/l_ruizllamas_um_es/EgUsBH2ItJVOjzIKMjGdM8cBTdCb_9QiTKrEISQLGcbOIA?e=BT3VlJ"},
+    { id: "tmdb_id:429200", /*Good Time*/ downloadUrl: "https://univmurcia-my.sharepoint.com/:f:/g/personal/l_ruizllamas_um_es/EgS4INtx6GhDkz_bh9RvvxkBv0nBlSljUhYLvdbS9w1ZOw?e=7H26UI"},
+    { id: "tmdb_id:1137350", /*The Phoenician Scheme*/ downloadUrl: "https://univmurcia-my.sharepoint.com/:f:/g/personal/l_ruizllamas_um_es/En4Jq7sSIJ9Av06Nt8JbqeIBmpHyqx7D6IBa7D_3B8T8hw?e=nPEq8T"},
+    { id: "tmdb_id:3175", /*Barry Lindon*/ downloadUrl: "https://univmurcia-my.sharepoint.com/:f:/g/personal/l_ruizllamas_um_es/Emqiy1y1hZpElVCmA0Qh1YIBU0et_n1xbp7ukz5gvPGz3Q?e=Lg2MJX"},
+    { id: "tmdb_id:346", /*Seven Samurai*/ downloadUrl: "https://univmurcia-my.sharepoint.com/:f:/g/personal/l_ruizllamas_um_es/Eu15HJq3fdxCk2XIQ0WOPb8BEJYMHMYdrqcx0Q4jo8RdsA?e=M7Obs9"},
+    { id: "tmdb_id:101", /*Leon The proffesional*/ downloadUrl: "https://univmurcia-my.sharepoint.com/:f:/g/personal/l_ruizllamas_um_es/EpM4yWHR5DZIi72f_qYId4sBa7h0kzIlnDH4cqc0Xps7jA?e=k6Cc5D"},
+    { id: "tmdb_id:911430",  /*F1 The Movie*/ downloadUrl: "https://univmurcia-my.sharepoint.com/:f:/g/personal/l_ruizllamas_um_es/EsoDsLpiRPVPpplXpUUKCE4BH3YdlS3Iuu0pvMSOP3FH8Q?e=dHegWD" },
+    { id: "tmdb_id:1244244", /*Cloud*/ downloadUrl: "https://univmurcia-my.sharepoint.com/:f:/g/personal/l_ruizllamas_um_es/EocrXMU9qklHgVNF7PVDTGoBNjlzD4mECebGs3ZUR_w3Ag?e=dfIALI" },
+    { id: "tmdb_id:104548", /*Demons (Pandemonium)*/ downloadUrl: "https://univmurcia-my.sharepoint.com/:f:/g/personal/l_ruizllamas_um_es/EuIx5XuiSJlGhwr3NN07LMcB9y9dkw_E9mukt0YSnVce5g?e=rxHypF"},
+    { id: "La Haine", downloadUrl: "https://univmurcia-my.sharepoint.com/:f:/g/personal/l_ruizllamas_um_es/Ei0SG_yQHGNDg6IOlbkMN_MBSAVpRLUB7Yu8jSQadXna_w?e=7aqW0E" },
+    { id: "Magazine Dreams", downloadUrl: "https://univmurcia-my.sharepoint.com/:f:/g/personal/l_ruizllamas_um_es/EqCy4dIfCB9BrRHz2Giq39kBWf8e8bw05-hT0RA4ZTVmmA?e=2Q6TU3" },
+    { id: "Materialists", downloadUrl: "https://univmurcia-my.sharepoint.com/:f:/g/personal/l_ruizllamas_um_es/EjUqWxjIHIFOnPd3JCamOqsBqEANQ2VDVvYU0YSMGTQF8g?e=0UfbuK" },
+    { id: "Mystic River", downloadUrl: "https://univmurcia-my.sharepoint.com/:f:/g/personal/l_ruizllamas_um_es/EivumR0pgB5Aqr8Lo4HAHaUBsphTyOhBUcPGCh5Cg0PynA?e=SFj7CH" },
+    { id: "Nueve Reinas", downloadUrl: "https://univmurcia-my.sharepoint.com/:f:/g/personal/l_ruizllamas_um_es/EmBYqnhnGQxKg1qeP-R9B3MBCdhYFuI_5GzSovoYAgEH2A?e=IPl4aW" },
+    { id: "Paris, Texas", downloadUrl: "https://univmurcia-my.sharepoint.com/:f:/g/personal/l_ruizllamas_um_es/Ei9IozTlTfZInWY8yVxv8cABwofFc36t1MHh1NgiK6IInw?e=uMipfQ" },
+    { id: "Some Like It Hot", downloadUrl: "https://univmurcia-my.sharepoint.com/:f:/g/personal/l_ruizllamas_um_es/EnQRybWjD-RPl_NF2F3b84IBie2_xPRX7vi-NNCb5-rsJg?e=b8ddPG" },
+    { id: "tmdb_id:615453", /*Ne Zha I*/ downloadUrl: "https://univmurcia-my.sharepoint.com/:f:/g/personal/l_ruizllamas_um_es/EpOAy-yvM71Jm5ro_bnr_1MB7D1zAq6TbddBIgP6jPnXnA?e=KfWFNT" },
+    { id: "tmdb_id:980477", /*Ne Zha II*/ downloadUrl: "https://univmurcia-my.sharepoint.com/:f:/g/personal/l_ruizllamas_um_es/EiuiQ0JSnrxDsgSSFdhjc2MBjUSgMjgoG9pD10fao4DHrQ?e=zmCFuR"},
+    { id: "Lawrence of Arabia", downloadUrl: "https://univmurcia-my.sharepoint.com/:f:/g/personal/l_ruizllamas_um_es/Erw9NSVsLTpCn-kSiwmL-PIBBaEy-LitQLu7nCzUghIXyw?e=iAIPeo" },
+    { id: "Superman", downloadUrl: "https://univmurcia-my.sharepoint.com/:f:/g/personal/l_ruizllamas_um_es/EnoQYfe8jHdAn1SBK1j4HP0BwyBX1pbKmHjuzPu65PxC_g?e=4042PZ" },
+    { id: "Sinners", downloadUrl: "https://univmurcia-my.sharepoint.com/:f:/g/personal/l_ruizllamas_um_es/Emkdn8_iNzpBqgKPhHJC2TYBeEDINrQ4TnS4hQMPCmuwzQ?e=SzfThH" },
+    { id: "Superbad", downloadUrl: "https://univmurcia-my.sharepoint.com/:f:/g/personal/l_ruizllamas_um_es/EiNupCzQXdNKlSH0g7qpXyEBP1dciRJ7bKHttsuTgOd6oQ?e=ulbv7R" },
+    { id: "Moonlight", downloadUrl: "https://univmurcia-my.sharepoint.com/:f:/g/personal/l_ruizllamas_um_es/EubHLoNfNJJEvkcM7r8jUeEBUCYSraxk_0r4ooXykJG1KA?e=lrvae0" },
+    { id: "Everything Everywhere All at Once", downloadUrl: "https://univmurcia-my.sharepoint.com/:f:/g/personal/l_ruizllamas_um_es/Ei_Hs4CHA6ZMsih5OiXDF0IByYBev8xi1nla_hyc9IyGWA?e=zUr0WZ" },
+    { id: "Hoodwinked!", downloadUrl: "https://univmurcia-my.sharepoint.com/:f:/g/personal/l_ruizllamas_um_es/Em1rcDMD4XNBrksM8e-oaOEBPNOSHl49Zt1EoXJ8y3k95w?e=ljP1g4" },
+    { id: "A Taxi Driver", downloadUrl: "https://univmurcia-my.sharepoint.com/:f:/g/personal/l_ruizllamas_um_es/Ej5VS7qENE1CpufvfLZ9jjEBxgsKJ08zyxAN7Eah0x3h0g?e=UqORsm" },
+    { id: "Kill Bill: Vol. 1", downloadUrl: "https://univmurcia-my.sharepoint.com/:f:/g/personal/l_ruizllamas_um_es/ErQbzDSqfDtFuwhDsZ2VQVUBSHhgVKfZVzv7PHlu24HvIQ?e=Vezz3Y" },
+    { id: "Tropic Thunder", downloadUrl: "https://univmurcia-my.sharepoint.com/:f:/g/personal/l_ruizllamas_um_es/Epu-Zl87jvVPl25UO-VpUAUBXtammJIXPVjx7rIGL5NfJg?e=lgmTfj" },
+    { id: "Fight Club", downloadUrl: "https://univmurcia-my.sharepoint.com/:f:/g/personal/l_ruizllamas_um_es/Eur08kIVELVMi7JGhxAq-L0BaUokmQJYXdwB8Q3idBxQSA?e=nGJ7qf" },
+    { id: "Dead Poets Society", downloadUrl: "https://univmurcia-my.sharepoint.com/:f:/g/personal/l_ruizllamas_um_es/EuDlLIqqfCNDjCoPfICD-8MBusMeUVu9x0nc5aasIOS_fg?e=pD2s92" },
+    { id: "tmdb_id:30018", /*Mother*/ downloadUrl: "https://univmurcia-my.sharepoint.com/:f:/g/personal/l_ruizllamas_um_es/ErfCL_XjF_xKmQqJvQgNb8oB19sPYAky5Pa-D4HdZjAIrg?e=6KduNw"},
+    { id: "Wolfs", downloadUrl: "https://univmurcia-my.sharepoint.com/:f:/g/personal/l_ruizllamas_um_es/EpWCqjemErFJhZKWfCK5aiABOpNNwgFralI9ZMKcAaWzfw?e=vHEeaM" },
+    { id: "tmdb_id:580175", /*Another Round*/ downloadUrl: "https://univmurcia-my.sharepoint.com/:f:/g/personal/l_ruizllamas_um_es/EiWEU6zx6PlNmquVujXSiKoBdKOeI9TMY_ZH6FhNjQiOgQ?e=LUuo8I" },
+    { id: "Bronson", downloadUrl: "https://univmurcia-my.sharepoint.com/:f:/g/personal/l_ruizllamas_um_es/Egd3omjuO1BPki67_oUAzx8BBBRBxGEgSEag5pddh7VV0g?e=yKHLcf" },
+    { id: "Kill Bill: Vol. 2", downloadUrl: "https://univmurcia-my.sharepoint.com/:f:/g/personal/l_ruizllamas_um_es/Eu4OFNNXP9pHuGqkfKGf8TsB57a0Zhu-a6wu3f7lhOIq6Q?e=xoLm9L" },
+    { id: "Nope", downloadUrl: "https://univmurcia-my.sharepoint.com/:f:/g/personal/l_ruizllamas_um_es/Epxpr5Z-m45NjMIkzEv0kVcBXNNKjZSYIR3XKu-fdS53Fw?e=8RwJ20" },
+    { id: "Arrival", downloadUrl: "https://univmurcia-my.sharepoint.com/:f:/g/personal/l_ruizllamas_um_es/EkTq2Bwc6f1Fjlz92VFbLPMBFi2XGR3iyPPTVlXNspvUNg?e=HRanNA" },
+    { id: "tmdb_id:11645", /*RAN*/ downloadUrl: "https://univmurcia-my.sharepoint.com/:f:/g/personal/l_ruizllamas_um_es/EpBxCF2q--NKmir5jM_0jUABQyYZwehR2Px-wohtGqeXBw?e=FKiMDl"},
+    { id: "tmdb_id:1184918", /*The wild robot*/ downloadUrl: "https://univmurcia-my.sharepoint.com/:f:/g/personal/l_ruizllamas_um_es/Et3dbuQ5PH9Apcrcgaj3gawB4Tz5tyIKDVjbFJvC3CiunA?e=D8iJYr" },
+    { id: "tmdb_id:303991", /*Demolition*/ downloadUrl: "https://univmurcia-my.sharepoint.com/:f:/g/personal/l_ruizllamas_um_es/EvHokokt7TNNpnaZbeuor_kB0ei-xAK-f909yw3Ahchnxw?e=mQFHKt"},
+    { id: "tmdb_id:3782", /*Ikiru*/ downloadUrl: "https://univmurcia-my.sharepoint.com/:f:/g/personal/l_ruizllamas_um_es/EivYwLP7OyFOuLy6hIvwZV8BdbW4Bfy_4lkq_KF1_I7edQ?e=hPwXo6" },
+    { id: "tmdb_id:6977", /*No country for old men*/ downloadUrl: "https://univmurcia-my.sharepoint.com/:f:/g/personal/l_ruizllamas_um_es/EgMfe3bkCsVFu6rPkNXwuesBYEIUUFmQ7YuGzSm2d6nQDQ?e=uZzMfR"},
+    { id: "tmdb_id:1100099", /*We live in time*/ downloadUrl: "https://univmurcia-my.sharepoint.com/:f:/g/personal/l_ruizllamas_um_es/Ei81zZTU6dJOphDkf5NvhOYBPLUvaH52Mn9QkAX2EPNrvg?e=nQS59o"},
+    { id: "tmdb_id:623", /*Un Pez Llamado Wanda*/ downloadUrl: "https://univmurcia-my.sharepoint.com/:f:/g/personal/l_ruizllamas_um_es/EpsXegDYzs1HnwbBBxwYrUQBZZXKY4bVBsNxNOY7DKdEow?e=GZ2h67"},
+    { id: "tmdb_id:648878", /*Eddington*/ downloadUrl: "https://univmurcia-my.sharepoint.com/:f:/g/personal/l_ruizllamas_um_es/EuGB8uEv9UNHhraanmFHh1YB0ozAJBHzlBZtzxfvrLR4yw?e=zH5zmJ"},   
   ];
+
 async function fetchMovie(movieObject) {
     const identifier = movieObject.id;
     const downloadUrl = movieObject.downloadUrl;
@@ -323,10 +400,12 @@ async function fetchMovie(movieObject) {
     } else {
         url = `https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&language=es-ES&query=${encodeURIComponent(identifier)}`;
     }
+
     try {
         const res = await fetch(url);
         const data = await res.json();
         let movieData;
+
         if (identifier.startsWith("tmdb_id:")) {
             movieData = data;
         } else {
@@ -337,7 +416,9 @@ async function fetchMovie(movieObject) {
                 return;
             }
         }
+        
         if (movieData) {
+            // Obtener el director (director de la primera crew)
             let director = '';
             try {
               const creditsRes = await fetch(`https://api.themoviedb.org/3/movie/${movieData.id}/credits?api_key=${API_KEY}`);
@@ -349,13 +430,18 @@ async function fetchMovie(movieObject) {
             } catch (error) {
               console.warn(`No se pudieron obtener los créditos del director para ${movieData.title}`);
             }
+
+            // Obtener el ID del tráiler
             const videosRes = await fetch(`https://api.themoviedb.org/3/movie/${movieData.id}/videos?api_key=${API_KEY}`);
             const videosData = await videosRes.json();
             const trailer = videosData.results.find(video => video.site === "YouTube" && video.type === "Trailer");
             const trailerId = trailer ? trailer.key : null;
+
+            // Convertir los géneros
             const genreNames = (movieData.genre_ids || [])
                 .map(id => GENRES[id] || "")
                 .filter(Boolean);
+
             const card = document.createElement('article');
             card.className = 'card';
             card.dataset.title = movieData.title;
@@ -363,11 +449,13 @@ async function fetchMovie(movieObject) {
             card.dataset.rating = movieData.vote_average.toFixed(1);
             card.dataset.language = movieData.original_language;
             card.dataset.genres = genreNames.join(",");
+
             card.innerHTML = `
                 <div class="poster-container">
                 ${movieData.poster_path 
                     ? `<img src="https://image.tmdb.org/t/p/w500${movieData.poster_path}" alt="${movieData.title}" class="poster">` 
                     : `<div class="poster-placeholder">Sin póster</div>`}
+                ${movieData.vote_average ? `<span class="quality-badge">${movieData.vote_average.toFixed(1)}/10</span>` : ''}
                 </div>
                 <div class="content">
                 <h3>${movieData.title} <span class="meta">(${(movieData.release_date || "").split("-")[0]})</span></h3>
@@ -383,26 +471,34 @@ async function fetchMovie(movieObject) {
                 </div>
                 </div>
             `;
+
             grid.appendChild(card);
         }
     } catch (error) {
         console.error(`❌ Error al cargar la película "${identifier}":`, error);
     }
   }
+
   async function loadMovies() {
     for (const movieObject of movies) {
       await fetchMovie(movieObject);
     }
+    // actualizar contador inicial
     document.querySelector('.count').textContent = grid.querySelectorAll('.card').length;
     applyFilters();
     applySort();
   }
+
   loadMovies();
 </script>
+
 <script>
+  // Script para manejar la ventana modal
   const modal = document.getElementById('trailerModal');
   const closeBtn = document.querySelector('.close-btn');
   const player = document.getElementById('trailerPlayer');
+
+  // Abre el modal al hacer clic en el botón
   document.addEventListener('click', (e) => {
     if (e.target.matches('.btn-trailer')) {
       const trailerId = e.target.dataset.trailerId;
@@ -412,10 +508,14 @@ async function fetchMovie(movieObject) {
       }
     }
   });
+
+  // Cierra el modal al hacer clic en el botón de cerrar
   closeBtn.addEventListener('click', () => {
-    player.src = '';
+    player.src = ''; // Detiene el video al cerrar
     modal.style.display = 'none';
   });
+
+  // Cierra el modal al hacer clic fuera del contenido
   window.addEventListener('click', (e) => {
     if (e.target === modal) {
       player.src = '';
@@ -425,3 +525,4 @@ async function fetchMovie(movieObject) {
 </script>
 </body>
 </html>
+
